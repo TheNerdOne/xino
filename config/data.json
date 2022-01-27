@@ -1,0 +1,34 @@
+{
+    "fakeData": [
+        {
+            "title": "رتبه سریال Attack on titan در ۲۵۰ سریال برتر imdb?",
+            "answer": "88",
+            "choices": [
+                "88",
+                "36",
+                "10",
+                "نمیدونم"
+            ]
+        },
+        {
+            "title": "برترین زبان برنامه نویسی تاریخ؟",
+            "answer": "c",
+            "choices": [
+                "c",
+                "c++",
+                "java",
+                "js"
+            ]
+        },
+        {
+            "title": "نتیجه‌ی console.log(1==='1')",
+            "answer": "false",
+            "choices": [
+                "true",
+                "false",
+                "NaN",
+                "undefined"
+            ]
+        }
+    ]
+}
