@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="mainTimerDiv">
+      <div class="sec">
+        {{ timer }}
+      </div>
+      <div class="timer" :style="`width:${timer * 10}%`"></div>
+    </div>
     <h2>{{ data.fakeData[step].title }}</h2>
     <div v-for="(item, idx) in data.fakeData[step].choices" :key="idx">
       <div @click="selectedAnswer(item)">
@@ -13,7 +19,6 @@
         class="border rounded"
         :ref="`answer${item.answer}`"
       ></div>
-      {{ timer }}
     </div>
   </div>
 </template>
@@ -108,5 +113,19 @@ export default {
 }
 .wrong {
   background-color: darkred;
+}
+.timer {
+  height: 15px;
+  border-radius: 3px;
+  background-color: darkseagreen;
+}
+.mainTimerDiv {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.mainTimerDiv .sec {
+  text-align: center;
 }
 </style>
