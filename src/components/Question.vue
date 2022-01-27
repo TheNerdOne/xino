@@ -77,7 +77,7 @@ export default {
       }
     },
     timer(val) {
-      if (val == 0) {
+      if (val < 0) {
         this.clearTimerAndGoNext();
         this.$refs[
           `answer${this.data.fakeData[this.step].answer}`
