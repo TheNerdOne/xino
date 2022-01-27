@@ -1,13 +1,12 @@
 <template>
   <div class="w-56 h-screen m-auto flex items-center justify-center">
     <StartPage v-if="started == false" @begin="begin($event)" />
-    <Question v-if="started" :data="questionList" @end="Result($event)" />
+    <Question v-if="started" @end="Result($event)" />
     <Result v-if="showResult" :answers="userAnswers" :key="resultKey" />
   </div>
 </template>
 
 <script>
-import fakeData from "../../config/data.json";
 import Question from "./Question.vue";
 import Result from "./Result.vue";
 import StartPage from "./StartPage.vue";
@@ -32,9 +31,6 @@ export default {
       this.resultKey += 1;
       this.started = null;
     },
-  },
-  mounted() {
-    this.questionList = fakeData;
   },
 };
 </script>
