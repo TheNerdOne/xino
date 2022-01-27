@@ -10,7 +10,7 @@
       {{ questionList.fakeData[step].title }}
     </h2>
     <div
-      class="my-4 bg-blue-300 p-2 rounded-xl"
+      class="my-4 bg-blue-300 p-2 rounded-xl cursor-pointer"
       v-for="(item, idx) in questionList.fakeData[step].choices"
       :key="idx"
     >
@@ -55,22 +55,24 @@ export default {
       this.stepTimer();
     },
     async selectedAnswer(payload) {
-      this.clearTimerAndGoNext();
       await this.checkAnswer(payload);
       this.step++;
+      this.clearTimerAndGoNext();
     },
     async checkAnswer(payload) {
       return new Promise((resolve) => {
-        this.questionList.fakeData[this.step].answer == payload
-          ? this.userChoices.push(true) &&
-            this.$refs[
-              `answer${this.questionList.fakeData[this.step].answer}`
-            ][0].classList.add("right")
-          : this.userChoices.push(false) &&
-            this.$refs[
-              `answer${this.questionList.fakeData[this.step].answer}`
-            ][0].classList.add("wrong");
-        resolve("resolve");
+        setTimeout(() => {
+          this.questionList.fakeData[this.step].answer == payload
+            ? this.userChoices.push(true) &&
+              this.$refs[
+                `answer${this.questionList.fakeData[this.step].answer}`
+              ][0].classList.add("right")
+            : this.userChoices.push(false) &&
+              this.$refs[
+                `answer${this.questionList.fakeData[this.step].answer}`
+              ][0].classList.add("wrong");
+          resolve("resolve");
+        }, 500);
       });
     },
     shuffleChoice() {
@@ -82,14 +84,16 @@ export default {
   watch: {
     step(val) {
       if (val == this.questionList.fakeData.length) {
-        this.$emit("end", { end: true, answers: this.userChoices });
         clearInterval(this.timerKiller);
+        setTimeout(() => {
+          this.$emit("end", { end: true, answers: this.userChoices });
+        }, 500);
       } else {
         this.shuffleChoice();
       }
     },
     timer(val) {
-      if (val < 0) {
+      if (val < 0 && this.step != this.questionList.fakeData.length) {
         this.clearTimerAndGoNext();
         this.$refs[
           `answer${this.questionList.fakeData[this.step].answer}`
