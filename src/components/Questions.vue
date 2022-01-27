@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-56 h-screen m-auto flex items-center justify-center">
     <StartPage v-if="started == false" @begin="begin($event)" />
     <Question v-if="started" :data="questionList" @end="Result($event)" />
     <Result v-if="showResult" :answers="userAnswers" :key="resultKey" />
