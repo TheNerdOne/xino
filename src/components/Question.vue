@@ -56,23 +56,27 @@ export default {
     },
     async selectedAnswer(payload) {
       await this.checkAnswer(payload);
-      this.step++;
-      this.clearTimerAndGoNext();
+      setTimeout(() => {
+        this.step < this.questionList.fakeData.length && this.step++;
+      }, 300);
+      setTimeout(() => {
+        this.clearTimerAndGoNext();
+      }, 600);
     },
     async checkAnswer(payload) {
       return new Promise((resolve) => {
-        setTimeout(() => {
-          this.questionList.fakeData[this.step].answer == payload
-            ? this.userChoices.push(true) &&
-              this.$refs[
-                `answer${this.questionList.fakeData[this.step].answer}`
-              ][0].classList.add("right")
-            : this.userChoices.push(false) &&
-              this.$refs[
-                `answer${this.questionList.fakeData[this.step].answer}`
-              ][0].classList.add("wrong");
-          resolve("resolve");
-        }, 500);
+        if (this.questionList.fakeData[this.step].answer == payload) {
+          this.userChoices.push(true) &&
+            this.$refs[
+              `answer${this.questionList.fakeData[this.step].answer}`
+            ][0].classList.add("right");
+        } else {
+          this.userChoices.push(false) &&
+            this.$refs[
+              `answer${this.questionList.fakeData[this.step].answer}`
+            ][0].classList.add("wrong");
+        }
+        resolve("resolve");
       });
     },
     shuffleChoice() {
@@ -85,15 +89,13 @@ export default {
     step(val) {
       if (val == this.questionList.fakeData.length) {
         clearInterval(this.timerKiller);
-        setTimeout(() => {
-          this.$emit("end", { end: true, answers: this.userChoices });
-        }, 500);
+        this.$emit("end", { end: true, answers: this.userChoices });
       } else {
         this.shuffleChoice();
       }
     },
     timer(val) {
-      if (val < 0 && this.step != this.questionList.fakeData.length) {
+      if (val < 0) {
         this.clearTimerAndGoNext();
         this.$refs[
           `answer${this.questionList.fakeData[this.step].answer}`
