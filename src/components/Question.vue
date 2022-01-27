@@ -1,20 +1,26 @@
 <template>
   <div>
     <div class="mainTimerDiv">
-      <div class="sec">
+      <div class="sec my-2">
         {{ timer }}
       </div>
-      <div class="timer" :style="`width:${timer * 10}%`"></div>
+      <div class="timer my-2" :style="`width:${timer * 10}%`"></div>
     </div>
-    <h2>{{ data.fakeData[step].title }}</h2>
-    <div v-for="(item, idx) in data.fakeData[step].choices" :key="idx">
+    <h2 class="my-2 bg-blue-400 p-2 rounded-xl">
+      {{ questionList.fakeData[step].title }}
+    </h2>
+    <div
+      class="my-4 bg-blue-300 p-2 rounded-xl cursor-pointer"
+      v-for="(item, idx) in questionList.fakeData[step].choices"
+      :key="idx"
+    >
       <div @click="selectedAnswer(item)">
         {{ item }}
       </div>
     </div>
-    <div class="userChoices">
+    <div class="userChoices flex items-center justify-center">
       <div
-        v-for="item in data.fakeData"
+        v-for="item in questionList.fakeData"
         :key="item.answer"
         class="border rounded"
         :ref="`answer${item.answer}`"
@@ -24,19 +30,17 @@
 </template>
 
 <script>
+import fakeData from "../../config/data.json";
 export default {
   name: "Question",
-  props: {
-    data: {
-      type: Object,
-    },
-  },
+
   data() {
     return {
       step: 0,
       userChoices: [],
       timer: 10,
       timerKiller: null,
+      questionList: fakeData,
     };
   },
   methods: {
@@ -51,41 +55,56 @@ export default {
       this.stepTimer();
     },
     async selectedAnswer(payload) {
-      this.clearTimerAndGoNext();
       await this.checkAnswer(payload);
       this.step++;
+      this.clearTimerAndGoNext();
     },
     async checkAnswer(payload) {
       return new Promise((resolve) => {
-        this.data.fakeData[this.step].answer == payload
-          ? this.userChoices.push(true) &&
-            this.$refs[
-              `answer${this.data.fakeData[this.step].answer}`
-            ][0].classList.add("right")
-          : this.userChoices.push(false) &&
-            this.$refs[
-              `answer${this.data.fakeData[this.step].answer}`
-            ][0].classList.add("wrong");
-        resolve("resolve");
+        setTimeout(() => {
+          this.questionList.fakeData[this.step].answer == payload
+            ? this.userChoices.push(true) &&
+              this.$refs[
+                `answer${this.questionList.fakeData[this.step].answer}`
+              ][0].classList.add("right")
+            : this.userChoices.push(false) &&
+              this.$refs[
+                `answer${this.questionList.fakeData[this.step].answer}`
+              ][0].classList.add("wrong");
+          resolve("resolve");
+        }, 500);
       });
+    },
+    shuffleChoice() {
+      this.questionList.fakeData[this.step].choices = this.Shuffle(
+        this.questionList.fakeData[this.step].choices
+      );
     },
   },
   watch: {
     step(val) {
-      if (val == 3) {
-        this.$emit("end", { end: true, answers: this.userChoices });
+      if (val == this.questionList.fakeData.length) {
+        clearInterval(this.timerKiller);
+        setTimeout(() => {
+          this.$emit("end", { end: true, answers: this.userChoices });
+        }, 500);
+      } else {
+        this.shuffleChoice();
       }
     },
     timer(val) {
-      if (val == 0) {
+      if (val < 0 && this.step != this.questionList.fakeData.length) {
         this.clearTimerAndGoNext();
         this.$refs[
-          `answer${this.data.fakeData[this.step].answer}`
+          `answer${this.questionList.fakeData[this.step].answer}`
         ][0].classList.add("wrong");
         this.userChoices.push(false);
         this.step += 1;
       }
     },
+  },
+  created() {
+    this.shuffleChoice();
   },
   mounted() {
     this.stepTimer();
