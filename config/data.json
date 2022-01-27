@@ -3,33 +3,32 @@
         {
             "title": "رتبه سریال Attack on titan در ۲۵۰ سریال برتر imdb?",
             "answer": "88",
-            "choices": {
-                "1": "88",
-                "2": "36",
-                "3": "10",
-                "4": "نمیدونم"
-            }
+            "choices": [
+                "88",
+                "36",
+                "10",
+                "نمیدونم"
+            ]
         },
         {
             "title": "برترین زبان برنامه نویسی تاریخ؟",
             "answer": "c",
-            "choices": {
-                "1": "c",
-                "2": "c++",
-                "3": "java",
-                "4": "js"
-            }
+            "choices": [
+                "c",
+                "c++",
+                "java",
+                "js"
+            ]
         },
         {
             "title": "نتیجه‌ی console.log(1==='1')",
             "answer": "false",
-            "choices": {
-                "1": "true",
-                "2": "false",
-                "3": "NaN",
-                "4": "undefined"
-
-            }
+            "choices": [
+                "true",
+                "false",
+                "NaN",
+                "undefined"
+            ]
         }
     ]
 }
