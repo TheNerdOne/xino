@@ -1,18 +1,18 @@
 <template>
   <div>
     <div class="mainTimerDiv">
-      <div class="sec">
+      <div class="sec my-2">
         {{ timer }}
       </div>
-      <div class="timer" :style="`width:${timer * 10}%`"></div>
+      <div class="timer my-2" :style="`width:${timer * 10}%`"></div>
     </div>
-    <h2>{{ data.fakeData[step].title }}</h2>
-    <div v-for="(item, idx) in data.fakeData[step].choices" :key="idx">
+    <h2 class="my-2 bg-blue-400 p-2 rounded-xl">{{ data.fakeData[step].title }}</h2>
+    <div class="my-4 bg-blue-300 p-2 rounded-xl" v-for="(item, idx) in data.fakeData[step].choices" :key="idx">
       <div @click="selectedAnswer(item)">
         {{ item }}
       </div>
     </div>
-    <div class="userChoices">
+    <div class="userChoices flex items-center justify-center">
       <div
         v-for="item in data.fakeData"
         :key="item.answer"
