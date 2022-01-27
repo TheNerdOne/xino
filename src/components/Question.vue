@@ -12,8 +12,8 @@
         :key="item.answer"
         class="border rounded"
         :ref="`answer${item.answer}`"
-      >
-      </div>
+      ></div>
+      {{ timer }}
     </div>
   </div>
 </template>
@@ -30,10 +30,23 @@ export default {
     return {
       step: 0,
       userChoices: [],
+      timer: 10,
+      timerKiller: null,
     };
   },
   methods: {
+    stepTimer() {
+      this.timerKiller = setInterval(() => {
+        this.timer -= 1;
+      }, 1000);
+    },
+    clearTimerAndGoNext() {
+      clearInterval(this.timerKiller);
+      this.timer = 10;
+      this.stepTimer();
+    },
     async selectedAnswer(payload) {
+      this.clearTimerAndGoNext();
       await this.checkAnswer(payload);
       this.step++;
     },
@@ -58,6 +71,19 @@ export default {
         this.$emit("end", { end: true, answers: this.userChoices });
       }
     },
+    timer(val) {
+      if (val == 0) {
+        this.clearTimerAndGoNext();
+        this.$refs[
+          `answer${this.data.fakeData[this.step].answer}`
+        ][0].classList.add("wrong");
+        this.userChoices.push(false);
+        this.step += 1;
+      }
+    },
+  },
+  mounted() {
+    this.stepTimer();
   },
 };
 </script>
