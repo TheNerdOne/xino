@@ -2,7 +2,12 @@
   <div class="w-56 h-screen m-auto flex items-center justify-center">
     <StartPage v-if="started == false" @begin="begin($event)" />
     <Question v-if="started" @end="Result($event)" />
-    <Result v-if="showResult" :answers="userAnswers" :key="resultKey" />
+    <Result
+      v-if="showResult"
+      :answers="userAnswers"
+      :key="resultKey"
+      @reset="resetGame($event)"
+    />
   </div>
 </template>
 
@@ -15,7 +20,6 @@ export default {
   data() {
     return {
       started: false,
-      questionList: [],
       showResult: false,
       userAnswers: [],
       resultKey: 0,
@@ -30,6 +34,14 @@ export default {
       this.showResult = payload.end;
       this.resultKey += 1;
       this.started = null;
+    },
+    resetGame(payload) {
+      if (payload) {
+        this.started = false;
+        this.showResult = false;
+        this.userAnswers = [];
+        this.resultKey = 0;
+      }
     },
   },
 };
